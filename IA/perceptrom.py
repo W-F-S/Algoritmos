@@ -14,7 +14,7 @@ def predict(row, weights):
 
 
 #treinando os pesos dos inputs 
-def train_weights(tab_train, l_rate, n_epoch):
+def train_weights(tab_train, l_rate, n_epoch, show_error):
     weights = [0.0 for i in range(len(tab_train[0]))] #criando uma lista vazia com a mesma quantidade de colunas de tab_train
     for epoch in range(n_epoch):
         sum_error = 0.0
@@ -25,12 +25,14 @@ def train_weights(tab_train, l_rate, n_epoch):
             weights[0] = weights[0] + l_rate * error
             for i in range(len(row)-1):
                 weights[i + 1] = weights[i + 1] + l_rate * error * row[i]
+    if(show_error is True):
+        print("taxa de erro: %.3f, numero de rodadas: %d" % (sum_error, n_epoch))
     return weights   
 
 #formata o output
 def perceptron(train, test, l_rate, n_epoch):
     predictions = list()
-    weights = train_weights(train, l_rate, n_epoch)
+    weights = train_weights(train, l_rate, n_epoch, True)
     print('==========Tabela de respostas==========')
     for row in test:
         prediction = predict(row, weights)
@@ -61,7 +63,7 @@ datasetTreinoOR = [[0, 0, 0],
                    [0, 1, 1],  
                    [1, 1, 1]]  
 
-datasetOr = [[0, 1, 1],  
+datasetOR = [[0, 1, 1],  
              [0, 0, 0],  
              [1, 0, 1],  
              [0, 0, 0],  
@@ -78,7 +80,7 @@ datasetTreinoXOR = [[0, 0, 0],
                     [0, 1, 1],  
                     [1, 1, 0]]
 
-datasetXor = [[0, 1, 1],  
+datasetXOR = [[0, 1, 1],  
               [0, 0, 0],  
               [1, 0, 1],  
               [0, 0, 0],  
@@ -92,4 +94,7 @@ datasetXor = [[0, 1, 1],
 l_rate = 0.1
 n_epoch = 5
 resposta = perceptron(datasetTreinoAND, datasetAND, l_rate, n_epoch) 
+resposta = perceptron(datasetTreinoOR,  datasetOR, l_rate, n_epoch) 
+resposta = perceptron(datasetTreinoXOR, datasetXOR, l_rate, n_epoch) 
+
 
